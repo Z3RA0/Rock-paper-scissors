@@ -1,3 +1,19 @@
+//Variables
+let computerChoice;
+let playerSelection;
+
+const btnRock = document.querySelector('#rock');
+const btnPaper = document.querySelector('#paper');
+const btnScissors = document.querySelector('#scissors');
+const description = document.querySelector('.description');
+const roundDescription = document.querySelector('.roundDescription');
+const gameDescription = document.querySelector('.gameResultDescription');
+const playerScoreTracker = document.querySelector('#playerScoreTracker');
+const computerScoreTracker = document.querySelector('#computerScoreTracker');
+
+const restartBtn = document.createElement('button');
+restartBtn.textContent = 'Restart';
+
 // Computer random choice
 function getComputerChoice() {
   let ComputerNum = Math.floor(Math.random() * 3); 
@@ -12,57 +28,98 @@ function getComputerChoice() {
   }
  };
 
- let computerChoice;
+//a round
+function playRound() {
+  getComputerChoice();
+  computerChoice = getComputerChoice();
+  getRoundsResult();
+}
+
+// The game
+btnRock.addEventListener('click', () => {
+ playerSelection = 'rock';
+ playRound();
+ getGameResult();
+ computerScoreTracker.textContent = computerScore;
+ playerScoreTracker.textContent = playerScore;
+});
+
+btnPaper.addEventListener('click', () => {
+ playerSelection = 'paper';
+ playRound();
+ getGameResult();
+ computerScoreTracker.textContent = computerScore;
+ playerScoreTracker.textContent = playerScore;
+});
+
+btnScissors.addEventListener('click', () => {
+ playerSelection = 'scissors';
+ playRound();
+ getGameResult();
+ computerScoreTracker.textContent = computerScore;
+ playerScoreTracker.textContent = playerScore;
+});
+
+restartBtn.addEventListener('click', () => {
+  playerScore = 0;
+  computerScore = 0;
+  computerScoreTracker.textContent = computerScore;
+  playerScoreTracker.textContent = playerScore;
+  roundDescription.textContent = '';
+  gameDescription.textContent = '';
+  description.removeChild(restartBtn);
+ });
 
 // Score
 let playerScore = 0;
 let computerScore = 0;
-
-// Loops rounds until player or computer gets 5 points
-do{
-  getComputerChoice();
-  computerChoice = getComputerChoice();
-  console.log(computerChoice);
-  playerSelection = window.prompt('Enter your choice between: rock, paper and scissors');
-  getRoundsResult();
-}while (playerScore < 5 && computerScore < 5)
+playerScoreTracker.textContent = playerScore;
+computerScoreTracker.textContent = computerScore;
 
 // Game Results
-if (playerScore === 5) {
-    alert('Congrats !! You are the winner !')
-  } else if (computerScore === 5) {
-    alert('Oh no you lost...')
+function getGameResult() {
+  if (playerScore === 5) {
+      gameDescription.textContent = 'Congrats !! You are the winner !';
+      description.appendChild(roundDescription);
+      restartBtn;
+      description.appendChild(restartBtn);
+    } else if (computerScore === 5) {
+      gameDescription.textContent = 'Oh no you lost...';
+      description.appendChild(roundDescription);
+      restartBtn;
+      description.appendChild(restartBtn);
+  }
 }
 
 // Result of the rounds
 function getRoundsResult(){
-  if (playerSelection.toLowerCase() === computerChoice) {
-    alert('It is a tie - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore)
-  } else if (playerSelection.toLowerCase() === 'rock' && computerChoice === 'paper') {
+  if (playerSelection === computerChoice) {
+    roundDescription.textContent = 'It is a tie !';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'rock' && computerChoice === 'paper') {
     computerScore++;
-    alert('You lost against Paper - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore );
-    playerSelection;
-  } else if (playerSelection.toLowerCase() === 'rock' && computerChoice === 'scissors') {
+    roundDescription.textContent = 'You lost against Paper';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'rock' && computerChoice === 'scissors') {
     playerScore++;
-    alert('You won against Scissors - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore);
-    playerSelection;
-  } else if (playerSelection.toLowerCase() === 'paper' && computerChoice === 'scissors') {
+    roundDescription.textContent = 'You won against Scissors';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'paper' && computerChoice === 'scissors') {
     computerScore++;
-    alert('You lost against Scissors - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore);
-    playerSelection;
-  } else if (playerSelection.toLowerCase() === 'paper' && computerChoice === 'rock') {
+    roundDescription.textContent ='You lost against Scissors';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'paper' && computerChoice === 'rock') {
     playerScore++;
-    alert('You won against Rock - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore);
-    playerSelection;
-  } else if (playerSelection.toLowerCase() === 'scissors' && computerChoice === 'rock') {
+    roundDescription.textContent ='You won against Rock';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'scissors' && computerChoice === 'rock') {
     computerScore++;
-    alert('You lost against Rock - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore);
-    playerSelection;
-  } else if (playerSelection.toLowerCase() === 'scissors' && computerChoice === 'paper') {
+    roundDescription.textContent ='You lost against Rock';
+    description.appendChild(roundDescription);
+  } else if (playerSelection === 'scissors' && computerChoice === 'paper') {
     playerScore++;
-    alert('You won against Paper - ' + 'Player Score : ' + playerScore + ' | ' + 'Computer Score : ' + computerScore);
-    playerSelection;
-  } else {
-    alert('Invalid input');
+    roundDescription.textContent ='You won against Paper';
+    description.appendChild(roundDescription);
   }
 }
+ 
